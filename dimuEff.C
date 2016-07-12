@@ -31,7 +31,7 @@ double m2S_high = 10.563;
 
 void dimuEff(
 	int oniaMode = 2, //1 = 1S and 2 = 2S
-	bool isPbPb = true //true = PbPb and false = pp
+	bool isPbPb = false //true = PbPb and false = pp
 	){      // Change function name
        
 
@@ -268,15 +268,15 @@ void dimuEff(
         TFile* ReweightFunctions = new TFile("dNdpT_ratio_tsallis.root", "Open");
 
         if(oniaMode == 1){
-        fAA = (TF1*)ReweightFunctions->Get("f1sraa");
+        fAA = (TF1*)ReweightFunctions->Get("f1sraa_test");
 //        fAAmc = (TF1*)ReweightFunctions->Get("AA1Smc");
-        fpp = (TF1*)ReweightFunctions->Get("f1srpp");
+        fpp = (TF1*)ReweightFunctions->Get("f1srpp_test");
 //        fppmc = (TF1*)ReweightFunctions->Get("pp1Smc");
 	}
 	else{
-	fAA = (TF1*)ReweightFunctions->Get("f2sraa");
+	fAA = (TF1*)ReweightFunctions->Get("f2sraa_test");
 //        fAAmc = (TF1*)ReweightFunctions->Get("AA2Smc");
-        fpp = (TF1*)ReweightFunctions->Get("f2srpp");
+        fpp = (TF1*)ReweightFunctions->Get("f2srpp_test");
 //        fppmc = (TF1*)ReweightFunctions->Get("pp2Smc");
 	}
         /*AA2S->SetNpx(100000);
@@ -373,7 +373,7 @@ void dimuEff(
                          ptReweight = (fpp->Eval(ptReco));
 			 weight = ptReweight;
  			 }
-                        
+
 	      		bool recoPass=0;
 
 			if (Reco_QQ_sign[iQQ]==0 && acceptMu && mupl_cut && mumi_cut && trigL1Dmu){recoPass=1;}
@@ -381,10 +381,12 @@ void dimuEff(
                         //filling RecoEvent Histo if passing
 			if(rapReco<2.4 && ptReco<30 && Centrality<160){
 			if(recoPass == 1 && PtCutPass ==1 && MassCutPass == 1){
+
 			RecoEvents->Fill(Centrality, weight);
                         RecoEventsInt->Fill(Centrality,weight);
 			RecoEventsPt->Fill(ptReco,weight);
 			RecoEventsRap->Fill(rapReco,weight);
+
 			}
 			}
 		
@@ -394,6 +396,7 @@ void dimuEff(
 
 		//Denominator loop  GEN
 		for (int iQQ=0; iQQ<Gen_QQ_size;iQQ++){
+
 			TLorentzVector *g_qq4mom = (TLorentzVector*) Gen_QQ_4mom->At(iQQ);
 			TLorentzVector *g_mumi4mom = (TLorentzVector*) Gen_QQ_mumi_4mom->At(iQQ);
 			TLorentzVector *g_mupl4mom = (TLorentzVector*) Gen_QQ_mupl_4mom->At(iQQ);
@@ -455,7 +458,6 @@ void dimuEff(
 
 
 	}
-
 
 
 //------Cent---------       
@@ -566,6 +568,7 @@ EffInt->GetYaxis()->CenterTitle();
 EffInt->Draw("AP");
 c4->SaveAs(Form("EfficiencyInt_%dS_%s.png",oniaMode,isPbPb ? "PbPb" : "PP"));
 
+
 /*
 //drawing the number RecoEvents        
 TCanvas *c2 = new TCanvas("c2","c1",600,600);
@@ -598,9 +601,8 @@ MyFileEff->Close();
 
         ReweightFunctions->Close();
 
+
 }
-
-
 
 //Returns a boolean for muon in acceptance
 bool IsAccept(TLorentzVector *Muon){
