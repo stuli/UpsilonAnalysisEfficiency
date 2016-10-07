@@ -12,7 +12,7 @@ const int  nRapBin = 2;
 const int  nIntBin = 1;
 
 
-void singleRatioEff(bool isPbPb = false){
+void singleRatioEff(bool isPbPb = true){
         gROOT->Macro("logon.C+");
 
         double          CenBin[nCenBin] = {5,15,30,50,70,90,110,130,150};

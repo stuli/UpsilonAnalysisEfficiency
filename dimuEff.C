@@ -31,7 +31,7 @@ double m2S_high = 10.563;
 
 void dimuEff(
 	int oniaMode = 2, //1 = 1S and 2 = 2S
-	bool isPbPb = false //true = PbPb and false = pp
+	bool isPbPb = true //true = PbPb and false = pp
 	){      // Change function name
        
 
@@ -268,13 +268,13 @@ void dimuEff(
         TFile* ReweightFunctions = new TFile("dNdpT_ratio_tsallis.root", "Open");
 
         if(oniaMode == 1){
-        fAA = (TF1*)ReweightFunctions->Get("f1sraa_test");
+        fAA = (TF1*)ReweightFunctions->Get("f1srpp_test");
 //        fAAmc = (TF1*)ReweightFunctions->Get("AA1Smc");
         fpp = (TF1*)ReweightFunctions->Get("f1srpp_test");
 //        fppmc = (TF1*)ReweightFunctions->Get("pp1Smc");
 	}
 	else{
-	fAA = (TF1*)ReweightFunctions->Get("f2sraa_test");
+	fAA = (TF1*)ReweightFunctions->Get("f2srpp_test");
 //        fAAmc = (TF1*)ReweightFunctions->Get("AA2Smc");
         fpp = (TF1*)ReweightFunctions->Get("f2srpp_test");
 //        fppmc = (TF1*)ReweightFunctions->Get("pp2Smc");
