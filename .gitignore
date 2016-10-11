@@ -21,6 +21,7 @@
 *.dylib
 *.png
 *.root
+*.d
 
 # Executables
 *.exe
