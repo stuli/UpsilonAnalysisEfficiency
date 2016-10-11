@@ -15,8 +15,8 @@ const int  nIntBin = 1;
 void singleRatioEff(bool isPbPb = true){
         gROOT->Macro("logon.C+");
 
-        double          CenBin[nCenBin] = {5,15,30,50,70,90,110,130,150};
-        double          CenBinErr[nCenBin] = {5,5,10,10,10,10,10,10,10};
+        double          CenBin[nCenBin] = {5,15,30,50,70,90,110,130,170};
+        double          CenBinErr[nCenBin] = {5,5,10,10,10,10,10,10,30};
 
         double          ptBin[nPtBin] = {2.5,8.5,21};
         double          ptBinErr[nPtBin] = {2.5,3.5,9};
@@ -24,8 +24,8 @@ void singleRatioEff(bool isPbPb = true){
         double          rapBin[nRapBin] = {0.6,1.8};
         double          rapBinErr[nRapBin] = {0.6,0.6};
 
-        double          intBin[1] = {80};
-        double          intBinErr[1] = {80};
+        double          intBin[1] = {100};
+        double          intBinErr[1] = {100};
 
 	TGraphAsymmErrors* hEffNumCent;
 	TGraphAsymmErrors* hEffNumInt;
@@ -47,7 +47,7 @@ void singleRatioEff(bool isPbPb = true){
 	hEffInt2S1S->SetName("hEffIntSingle");
 
 
-/////////// pp 2S
+//--- pp 2S
 
         TFile* fEff2S = new TFile(Form("Eff_%s_2S.root",isPbPb ? "PbPb" : "PP"), "Open");
 	fEff2S->GetObject("EffCent", hEffNumCent);
@@ -56,7 +56,7 @@ void singleRatioEff(bool isPbPb = true){
 	fEff2S->GetObject("EffRap", hEffNumRap);
 
 
-////////// pp 1S
+//--- pp 1S
 
 	TFile* fEff1S = new TFile(Form("Eff_%s_1S.root",isPbPb ? "PbPb" : "PP"), "Open");
         fEff1S->GetObject("EffCent", hEffDenCent);
@@ -66,7 +66,7 @@ void singleRatioEff(bool isPbPb = true){
 
 
 
-///////// Single Ratio 2S/1S Calculation
+//--- Single Ratio 2S/1S Calculation
 
         double EffRatio;
         double EffNum;
@@ -78,7 +78,6 @@ void singleRatioEff(bool isPbPb = true){
 	double EffRatioErrH;
         double EffRatioErrL;
 
-//                hEffRatio->Divide(hEffNum, hEffDen);
 
 	if(isPbPb){
         for (Int_t i = 0; i < nCenBin; i++){
@@ -89,8 +88,8 @@ void singleRatioEff(bool isPbPb = true){
                 EffDenErrH = hEffDenCent->GetErrorYhigh(i);
                 EffDenErrL = hEffDenCent->GetErrorYlow(i);
 		EffRatio = EffNum / EffDen;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
 
                 hEffCen2S1S->SetPoint(i, CenBin[i], EffRatio);
                 hEffCen2S1S->SetPointError(i, CenBinErr[i], CenBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -118,8 +117,8 @@ void singleRatioEff(bool isPbPb = true){
                 EffDenErrH = hEffDenPt->GetErrorYhigh(i);
                 EffDenErrL = hEffDenPt->GetErrorYlow(i);
 		EffRatio = EffNum / EffDen;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
 
                 hEffPt2S1S->SetPoint(i, ptBin[i], EffRatio);
                 hEffPt2S1S->SetPointError(i, ptBinErr[i], ptBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -145,8 +144,8 @@ void singleRatioEff(bool isPbPb = true){
                 EffDenErrH = hEffDenRap->GetErrorYhigh(i);
                 EffDenErrL = hEffDenRap->GetErrorYlow(i);
 		EffRatio = EffNum / EffDen;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
 
                 hEffRap2S1S->SetPoint(i, rapBin[i], EffRatio);
                 hEffRap2S1S->SetPointError(i, rapBinErr[i], rapBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -171,8 +170,8 @@ void singleRatioEff(bool isPbPb = true){
                 EffDenErrH = hEffDenInt->GetErrorYhigh(i);
                 EffDenErrL = hEffDenInt->GetErrorYlow(i);
 		EffRatio = EffNum / EffDen;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
 
                 hEffInt2S1S->SetPoint(i, intBin[i], EffRatio);
                 hEffInt2S1S->SetPointError(i, intBinErr[i], intBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -196,20 +195,19 @@ void singleRatioEff(bool isPbPb = true){
         c1->cd();
 
 	//adding a line
-	TLine* line1 = new TLine(0,1,160,1);
+	TLine* line1 = new TLine(0,1,200,1);
         line1->SetLineStyle(kDashed);
 
-        hEffCen2S1S->SetMarkerSize(2.0);
+        //hEffCen2S1S->SetMarkerSize(2.0);
         hEffCen2S1S->SetMarkerColor(kRed);
-        hEffCen2S1S->SetMarkerStyle(21);
-	hEffCen2S1S->SetLineColor(kRed);
+        hEffCen2S1S->SetMarkerStyle(20);
         hEffCen2S1S->SetTitle("");
         hEffCen2S1S->GetXaxis()->SetTitle("Centrality");
         hEffCen2S1S->GetXaxis()->CenterTitle();
 	hEffCen2S1S->GetYaxis()->CenterTitle();
 	hEffCen2S1S->GetYaxis()->SetTitle(Form("Efficiency[#varUpsilon(2S)/#varUpsilon(1S)]_{%s}",isPbPb ? "PbPb" : "PP"));
 	hEffCen2S1S->GetYaxis()->SetRangeUser(0.5, 1.5);
-	hEffCen2S1S->GetXaxis()->SetRangeUser(0.0, 160);
+	hEffCen2S1S->GetXaxis()->SetRangeUser(0.0, 200);
         hEffCen2S1S->Draw("AP");
 	line1->Draw("");
 
@@ -221,10 +219,9 @@ void singleRatioEff(bool isPbPb = true){
 	TLine* line2 = new TLine(0,1,30,1);
         line2->SetLineStyle(kDashed);
 
-        hEffPt2S1S->SetMarkerSize(2.0);
+        //hEffPt2S1S->SetMarkerSize(1.0);
         hEffPt2S1S->SetMarkerColor(kRed);
-        hEffPt2S1S->SetMarkerStyle(21);
-	hEffPt2S1S->SetLineColor(kRed);
+        hEffPt2S1S->SetMarkerStyle(20);
         hEffPt2S1S->SetTitle("");
         hEffPt2S1S->GetXaxis()->SetTitle("p_{T}");
         hEffPt2S1S->GetXaxis()->CenterTitle();
@@ -243,10 +240,9 @@ void singleRatioEff(bool isPbPb = true){
 	TLine* line3 = new TLine(0,1,2.4,1);
         line3->SetLineStyle(kDashed);
 
-        hEffRap2S1S->SetMarkerSize(2.0);
+        //hEffRap2S1S->SetMarkerSize(2.0);
         hEffRap2S1S->SetMarkerColor(kRed);
-        hEffRap2S1S->SetMarkerStyle(21);
-	hEffRap2S1S->SetLineColor(kRed);
+        hEffRap2S1S->SetMarkerStyle(20);
         hEffRap2S1S->SetTitle("");
         hEffRap2S1S->GetXaxis()->SetTitle("|y|");
         hEffRap2S1S->GetXaxis()->CenterTitle();
@@ -263,20 +259,19 @@ void singleRatioEff(bool isPbPb = true){
 	TCanvas* c4 = new TCanvas("c4", "Canvas with results1", 600, 600);
         c4->cd();
 
-	TLine* line4 = new TLine(0,1,2.4,1);
+	TLine* line4 = new TLine(0,1,200,1);
         line4->SetLineStyle(kDashed);
 
-        hEffInt2S1S->SetMarkerSize(2.0);
+        //hEffInt2S1S->SetMarkerSize(2.0);
         hEffInt2S1S->SetMarkerColor(kRed);
-        hEffInt2S1S->SetMarkerStyle(21);
-	hEffInt2S1S->SetLineColor(kRed);
+        hEffInt2S1S->SetMarkerStyle(20);
         hEffInt2S1S->SetTitle("");
         hEffInt2S1S->GetXaxis()->SetTitle("Integrated");
         hEffInt2S1S->GetXaxis()->CenterTitle();
 	hEffInt2S1S->GetYaxis()->CenterTitle();
 	hEffInt2S1S->GetYaxis()->SetTitle(Form("Efficiency[#varUpsilon(2S)/#varUpsilon(1S)]_{%s}",isPbPb ? "PbPb" : "PP"));
 	hEffInt2S1S->GetYaxis()->SetRangeUser(0.5, 1.5);
-	hEffInt2S1S->GetXaxis()->SetRangeUser(0.0, 160);
+	hEffInt2S1S->GetXaxis()->SetRangeUser(0.0, 200);
 	hEffInt2S1S->Draw("AP");
 	line4->Draw("");
 

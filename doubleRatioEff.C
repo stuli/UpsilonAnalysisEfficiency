@@ -22,8 +22,8 @@ void doubleRatioEff(){
         gROOT->Macro("logon.C+");
 	cout<<"set styles"<<endl;
 
-        double          CenBin[nCenBin] = {5,15,30,50,70,90,110,130,150};
-        double          CenBinErr[nCenBin] = {5,5,10,10,10,10,10,10,10};
+        double          CenBin[nCenBin] = {5,15,30,50,70,90,110,130,170};
+        double          CenBinErr[nCenBin] = {5,5,10,10,10,10,10,10,30};
 
         double          ptBin[nPtBin] = {2.5,8.5,21};
         double          ptBinErr[nPtBin] = {2.5,3.5,9};
@@ -31,8 +31,8 @@ void doubleRatioEff(){
         double          rapBin[nRapBin] = {0.6,1.8};
         double          rapBinErr[nRapBin] = {0.6,0.6};
 
-        double          intBin[1] = {80};
-        double          intBinErr[1] = {80};
+        double          intBin[1] = {100};
+        double          intBinErr[1] = {100};
 
 	TGraphAsymmErrors* hEffCenSinglePbPb;
 	TGraphAsymmErrors* hEffIntSinglePbPb;
@@ -52,7 +52,6 @@ void doubleRatioEff(){
         TGraphAsymmErrors* hEffIntDouble = new TGraphAsymmErrors(nIntBin);
 
 
-/////////// pp 2S
 
         TFile* fEffSinglePbPb = new TFile("EffSingleRatio_PbPb.root", "Open");
 	fEffSinglePbPb->GetObject("hEffCenSingle", hEffCenSinglePbPb);
@@ -65,7 +64,6 @@ void doubleRatioEff(){
 	fEffSinglePP->GetObject("hEffPtSingle", hEffPtSinglePP);
 	fEffSinglePP->GetObject("hEffRapSingle", hEffRapSinglePP);
 
-///////// double Ratio 2S/1S Calculation
 
         double EffRatio;
         double EffNum;
@@ -77,24 +75,23 @@ void doubleRatioEff(){
 	double EffRatioErrH;
         double EffRatioErrL;
 
-//                hEffRatio->Divide(hEffNum, hEffDen);
 
         for (Int_t i = 0; i < nCenBin; i++){
-		cout<<"Started loop: i = "<<i<<endl;
+//		cout<<"Started loop: i = "<<i<<endl;
                 EffNum = hEffCenSinglePbPb->Eval(CenBin[i]);
-                cout<<"Grabbed first bin of the numerator"<<endl;
+//                cout<<"Grabbed first bin of the numerator"<<endl;
                 EffDen = hEffIntSinglePP->Eval(intBin[0]);
-                cout<<"Calculated individual efficiencies"<<endl;
+//                cout<<"Calculated individual efficiencies"<<endl;
                 EffNumErrH = hEffCenSinglePbPb->GetErrorYhigh(i);
                 EffNumErrL = hEffCenSinglePbPb->GetErrorYlow(i);
                 EffDenErrH = hEffIntSinglePP->GetErrorYhigh(0);
                 EffDenErrL = hEffIntSinglePP->GetErrorYlow(0);
-		cout<<"Calculated individual errors"<<endl;
+//		cout<<"Calculated individual errors"<<endl;
 		EffRatio = EffNum / EffDen;
-		cout<<"Calculated ratio of efficiencies"<<endl;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
-		cout<<"Calculated error ratios"<<endl;
+//		cout<<"Calculated ratio of efficiencies"<<endl;
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
+//		cout<<"Calculated error ratios"<<endl;
 
                 hEffCenDouble->SetPoint(i, CenBin[i], EffRatio);
                 hEffCenDouble->SetPointError(i, CenBinErr[i], CenBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -114,21 +111,21 @@ void doubleRatioEff(){
 
 
         for (Int_t i = 0; i < nPtBin; i++){
-		cout<<"Started loop: i = "<<i<<endl;
+		//cout<<"Started loop: i = "<<i<<endl;
                 EffNum = hEffPtSinglePbPb->Eval(ptBin[i]);
-                cout<<"Grabbed first bin of the numerator"<<endl;
+                //cout<<"Grabbed first bin of the numerator"<<endl;
                 EffDen = hEffPtSinglePP->Eval(ptBin[i]);
-                cout<<"Calculated individual efficiencies"<<endl;
+                //cout<<"Calculated individual efficiencies"<<endl;
                 EffNumErrH = hEffPtSinglePbPb->GetErrorYhigh(i);
                 EffNumErrL = hEffPtSinglePbPb->GetErrorYlow(i);
                 EffDenErrH = hEffPtSinglePP->GetErrorYhigh(i);
                 EffDenErrL = hEffPtSinglePP->GetErrorYlow(i);
-		cout<<"Calculated individual errors"<<endl;
+		//cout<<"Calculated individual errors"<<endl;
 		EffRatio = EffNum / EffDen;
-		cout<<"Calculated ratio of efficiencies"<<endl;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
-		cout<<"Calculated error ratios"<<endl;
+		//cout<<"Calculated ratio of efficiencies"<<endl;
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
+		//cout<<"Calculated error ratios"<<endl;
 
                 hEffPtDouble->SetPoint(i, ptBin[i], EffRatio);
                 hEffPtDouble->SetPointError(i, ptBinErr[i], ptBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -149,21 +146,21 @@ void doubleRatioEff(){
         EffRatioErrL = 0;
 
         for (Int_t i = 0; i < nRapBin; i++){
-		cout<<"Started loop: i = "<<i<<endl;
+		//cout<<"Started loop: i = "<<i<<endl;
                 EffNum = hEffRapSinglePbPb->Eval(rapBin[i]);
-                cout<<"Grabbed first bin of the numerator"<<endl;
+                //cout<<"Grabbed first bin of the numerator"<<endl;
                 EffDen = hEffRapSinglePP->Eval(rapBin[i]);
-                cout<<"Calculated individual efficiencies"<<endl;
+                //cout<<"Calculated individual efficiencies"<<endl;
                 EffNumErrH = hEffRapSinglePbPb->GetErrorYhigh(i);
                 EffNumErrL = hEffRapSinglePbPb->GetErrorYlow(i);
                 EffDenErrH = hEffRapSinglePP->GetErrorYhigh(i);
                 EffDenErrL = hEffRapSinglePP->GetErrorYlow(i);
-		cout<<"Calculated individual errors"<<endl;
+		//cout<<"Calculated individual errors"<<endl;
 		EffRatio = EffNum / EffDen;
-		cout<<"Calculated ratio of efficiencies"<<endl;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
-		cout<<"Calculated error ratios"<<endl;
+		//cout<<"Calculated ratio of efficiencies"<<endl;
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
+		//cout<<"Calculated error ratios"<<endl;
 
                 hEffRapDouble->SetPoint(i, rapBin[i], EffRatio);
                 hEffRapDouble->SetPointError(i, rapBinErr[i], rapBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -183,21 +180,21 @@ void doubleRatioEff(){
         EffRatioErrL = 0;
 
         for (Int_t i = 0; i < nIntBin; i++){
-		cout<<"Started loop: i = "<<i<<endl;
+		//cout<<"Started loop: i = "<<i<<endl;
                 EffNum = hEffIntSinglePbPb->Eval(intBin[i]);
-                cout<<"Grabbed first bin of the numerator"<<endl;
+                //cout<<"Grabbed first bin of the numerator"<<endl;
                 EffDen = hEffIntSinglePP->Eval(intBin[i]);
-                cout<<"Calculated individual efficiencies"<<endl;
+                //cout<<"Calculated individual efficiencies"<<endl;
                 EffNumErrH = hEffIntSinglePbPb->GetErrorYhigh(i);
                 EffNumErrL = hEffIntSinglePbPb->GetErrorYlow(i);
                 EffDenErrH = hEffIntSinglePP->GetErrorYhigh(i);
                 EffDenErrL = hEffIntSinglePP->GetErrorYlow(i);
-		cout<<"Calculated individual errors"<<endl;
+		//cout<<"Calculated individual errors"<<endl;
 		EffRatio = EffNum / EffDen;
-		cout<<"Calculated ratio of efficiencies"<<endl;
-                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrH);  //Calculation for the combined efficiency	
-                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrL); //typo EffL -> ErrL
-		cout<<"Calculated error ratios"<<endl;
+		//cout<<"Calculated ratio of efficiencies"<<endl;
+                EffRatioErrH = RError(EffNum, EffNumErrH, EffDen, EffDenErrL);  //Calculation for the combined efficiency	
+                EffRatioErrL = RError(EffNum, EffNumErrL, EffDen, EffDenErrH); 
+		//cout<<"Calculated error ratios"<<endl;
 
                 hEffIntDouble->SetPoint(i, intBin[i], EffRatio);
                 hEffIntDouble->SetPointError(i, intBinErr[i], intBinErr[i], EffRatioErrL, EffRatioErrH);
@@ -218,44 +215,56 @@ void doubleRatioEff(){
         
         OutFile->Close();
 */
+
+        TFile* OutFile;
+        OutFile = new TFile(Form("EffDoubleRatio.root"), "Recreate");
+        hEffCenDouble->Write();
+        hEffPtDouble->Write();
+        hEffRapDouble->Write();
+        hEffIntDouble->Write();
+        
+        OutFile->Close();
+
 	
-        TCanvas* c1 = new TCanvas("c1", "Canvas with results1", 600, 600);
+        TCanvas* c1 = new TCanvas("c1", "Canvas with results1", 600, 680);
         c1->cd();
 
 	//adding a line
-	TLine* line1 = new TLine(0,1,160,1);
+	TLine* line1 = new TLine(0,1,200,1);
         line1->SetLineStyle(kDashed);
 
-        hEffCenDouble->SetMarkerSize(2.0);
+//        hEffCenDouble->SetMarkerSize(2.0);
         hEffCenDouble->SetMarkerColor(kRed);
-        hEffCenDouble->SetMarkerStyle(21);
-	hEffCenDouble->SetLineColor(kRed);
+        hEffCenDouble->SetMarkerStyle(20);
         hEffCenDouble->SetTitle("");
         hEffCenDouble->GetXaxis()->SetTitle("Centrality");
         hEffCenDouble->GetXaxis()->CenterTitle();
 	hEffCenDouble->GetYaxis()->CenterTitle();
+//        hEffCenDouble->GetXaxis()->SetTitleOffset(1.8);
+        hEffCenDouble->GetYaxis()->SetTitleOffset(1.5);
 	hEffCenDouble->GetYaxis()->SetTitle("Efficiency[#varUpsilon(2S)]/Efficieny[#varUpsilon(1S)]_{PbPb}/Efficiency[#varUpsilon(2S)]/Efficiency[#varUpsilon(1S)]_{pp}");
 	hEffCenDouble->GetYaxis()->SetRangeUser(0.5, 1.5);
-	hEffCenDouble->GetXaxis()->SetRangeUser(0.0, 160);
+	hEffCenDouble->GetXaxis()->SetRangeUser(0.0, 200);
         hEffCenDouble->Draw("AP");
 	line1->Draw("");
 
         c1->SaveAs("DoubleRatioEff_Cent.png");	
         
-	TCanvas* c2 = new TCanvas("c2", "Canvas with results1", 600, 600);
+	TCanvas* c2 = new TCanvas("c2", "Canvas with results1", 600, 680);
         c2->cd();
 
 	TLine* line2 = new TLine(0,1,30,1);
         line2->SetLineStyle(kDashed);
 
-        hEffPtDouble->SetMarkerSize(2.0);
+        //hEffPtDouble->SetMarkerSize(2.0);
         hEffPtDouble->SetMarkerColor(kRed);
-        hEffPtDouble->SetMarkerStyle(21);
-	hEffPtDouble->SetLineColor(kRed);
+        hEffPtDouble->SetMarkerStyle(20);
         hEffPtDouble->SetTitle("");
         hEffPtDouble->GetXaxis()->SetTitle("p_{T}");
         hEffPtDouble->GetXaxis()->CenterTitle();
 	hEffPtDouble->GetYaxis()->CenterTitle();
+//        hEffPtDouble->GetXaxis()->SetTitleOffset(1.8);
+        hEffPtDouble->GetYaxis()->SetTitleOffset(1.5);
 	hEffPtDouble->GetYaxis()->SetTitle("Efficiency[#varUpsilon(2S)]/Efficieny[#varUpsilon(1S)]_{PbPb}/Efficiency[#varUpsilon(2S)]/Efficiency[#varUpsilon(1S)]_{pp}");
 	hEffPtDouble->GetYaxis()->SetRangeUser(0.5, 1.5);
 	hEffPtDouble->GetXaxis()->SetRangeUser(0.0, 30);
@@ -264,20 +273,21 @@ void doubleRatioEff(){
 
         c2->SaveAs("DoubleRatioEff_Pt.png");	
 
-	TCanvas* c3 = new TCanvas("c3", "Canvas with results1", 600, 600);
+	TCanvas* c3 = new TCanvas("c3", "Canvas with results1", 600, 680);
         c3->cd();
 
 	TLine* line3 = new TLine(0,1,2.4,1);
         line3->SetLineStyle(kDashed);
 
-        hEffRapDouble->SetMarkerSize(2.0);
+        //hEffRapDouble->SetMarkerSize(2.0);
         hEffRapDouble->SetMarkerColor(kRed);
-        hEffRapDouble->SetMarkerStyle(21);
-	hEffRapDouble->SetLineColor(kRed);
+        hEffRapDouble->SetMarkerStyle(20);
         hEffRapDouble->SetTitle("");
         hEffRapDouble->GetXaxis()->SetTitle("|y|");
         hEffRapDouble->GetXaxis()->CenterTitle();
 	hEffRapDouble->GetYaxis()->CenterTitle();
+//        hEffRapDouble->GetXaxis()->SetTitleOffset(1.8);
+        hEffRapDouble->GetYaxis()->SetTitleOffset(1.5);
 	hEffRapDouble->GetYaxis()->SetTitle("Efficiency[#varUpsilon(2S)]/Efficieny[#varUpsilon(1S)]_{PbPb}/Efficiency[#varUpsilon(2S)]/Efficiency[#varUpsilon(1S)]_{pp}");
 	hEffRapDouble->GetYaxis()->SetRangeUser(0.5, 1.5);
 	hEffRapDouble->GetXaxis()->SetRangeUser(0.0, 2.4);
@@ -286,25 +296,26 @@ void doubleRatioEff(){
 
         c3->SaveAs("DoubleRatioEff_Rap.png");	
 
-	TCanvas* c4 = new TCanvas("c4", "Canvas with results1", 600, 600);
+	TCanvas* c4 = new TCanvas("c4", "Canvas with results1", 600, 680);
         c4->cd();
 
-	TLine* line4 = new TLine(0,1,2.4,1);
+	TLine* line4 = new TLine(0,1,200,1);
         line4->SetLineStyle(kDashed);
 
-        hEffIntDouble->SetMarkerSize(2.0);
+        //hEffIntDouble->SetMarkerSize(0);
         hEffIntDouble->SetMarkerColor(kRed);
-        hEffIntDouble->SetMarkerStyle(21);
-	hEffIntDouble->SetLineColor(kRed);
+        hEffIntDouble->SetMarkerStyle(20);
         hEffIntDouble->SetTitle("");
         hEffIntDouble->GetXaxis()->SetTitle("Integrated");
         hEffIntDouble->GetXaxis()->CenterTitle();
 	hEffIntDouble->GetYaxis()->CenterTitle();
+//        hEffIntDouble->GetXaxis()->SetTitleOffset(1.8);
+        hEffIntDouble->GetYaxis()->SetTitleOffset(1.5);
 	hEffIntDouble->GetYaxis()->SetTitle("Efficiency[#varUpsilon(2S)]/Efficieny[#varUpsilon(1S)]_{PbPb}/Efficiency[#varUpsilon(2S)]/Efficiency[#varUpsilon(1S)]_{pp}");
 	hEffIntDouble->GetYaxis()->SetRangeUser(0.5, 1.5);
-	hEffIntDouble->GetXaxis()->SetRangeUser(0.0, 160);
-	hEffIntDouble->Draw("AP");
-	line4->Draw("");
+	hEffIntDouble->GetXaxis()->SetRangeUser(0.0, 200);
+	hEffIntDouble->Draw("ap");
+	line4->Draw("same");
 
         c4->SaveAs("DoubleRatioEff_Int.png");	
 
